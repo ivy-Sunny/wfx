@@ -19,6 +19,10 @@
 *.tar.gz
 *.rar
 
+# 数据源文件
+
+db.properties
+
 # idea
 /.idea/
 

@@ -22,3 +22,7 @@ wfx_service
     1）继承父工程 
     2）依赖：wfx_dao
     
+wfx_manager
+
+    1）可以独立部署、运行
+    2）打包方式war

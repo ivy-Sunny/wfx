@@ -26,11 +26,6 @@
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
         </dependency>
-        <!--mybatis分页插件-->
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper</artifactId>
-        </dependency>
         <!--spring整合mybatis所需jar包-->
         <dependency>
             <groupId>org.mybatis</groupId>
