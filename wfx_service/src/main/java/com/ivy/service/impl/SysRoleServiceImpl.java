@@ -8,8 +8,10 @@ import com.ivy.entity.SysRole;
 import com.ivy.service.SysRoleService;
 import com.ivy.vo.LayuiVO;
 import com.ivy.vo.ResultVO;
+import com.ivy.vo.TreeNodeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +23,7 @@ import java.util.UUID;
  * @CreateTime: 2021-07-14
  */
 @Service
+@Transactional
 public class SysRoleServiceImpl implements SysRoleService {
     @Autowired
     private SysRoleDao sysRoleDao;
@@ -70,5 +73,34 @@ public class SysRoleServiceImpl implements SysRoleService {
         }
     }
 
+    @Override
+    public List<TreeNodeVO> findTree(String roleCode) {
+        List<TreeNodeVO> tree = sysRoleDao.findTreeNode();
+        List<String> checkedModules = sysRoleDao.findModuleIdsByRoleCode(roleCode);
+        for (TreeNodeVO m1 : tree) {
+            List<TreeNodeVO> m2 = m1.getChildren();
+            for (TreeNodeVO m3 : m2) {
+                if (checkedModules.contains(m3.getId())) {
+                    m3.setChecked(true);
+                }
+            }
+        }
+        return tree;
+    }
 
+    @Override
+    public ResultVO updateTree(String roleCode, String[] moduleCodes) {
+        int delDelete = sysRoleDao.deleteTree(roleCode);
+        System.out.printf("删除作用的列数：\t%d\n", delDelete);
+        int result = 0;
+        for (String moduleCode : moduleCodes) {
+            result++;
+            sysRoleDao.addTree(roleCode, moduleCode);
+        }
+        if (result > -1) {
+            return new ResultVO(roleCode);
+        } else {
+            return new ResultVO(1, "角色授权失败");
+        }
+    }
 }

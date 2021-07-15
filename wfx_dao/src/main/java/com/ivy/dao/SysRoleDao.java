@@ -2,10 +2,8 @@ package com.ivy.dao;
 
 import com.ivy.entity.SysRole;
 import com.ivy.vo.ResultVO;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import com.ivy.vo.TreeNodeVO;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -22,4 +20,12 @@ public interface SysRoleDao {
 
     @Delete("DELETE FROM sys_role WHERE role_code = #{roleCode}")
     public int delRole(String roleCode);
+
+    public List<TreeNodeVO> findTreeNode();
+
+    public List<String> findModuleIdsByRoleCode(String roleCode);
+
+    public int addTree(@Param("role_id") String roleId, @Param("module_id") String moduleId);
+
+    public int deleteTree(String roleId);
 }

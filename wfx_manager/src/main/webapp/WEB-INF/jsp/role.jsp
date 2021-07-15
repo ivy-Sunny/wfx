@@ -9,6 +9,8 @@
 
 <table id="roleList" lay-filter="roleFilter"></table>
 
+<%--tree--%>
+<div id="moduleTree" style="display: none"></div>
 <%--表头--%>
 <script id="addRoleToolBar" type="text/html">
 
@@ -20,6 +22,7 @@
 <script id="rowBar" type="text/html">
     <button lay-event="updateEvent" class="layui-btn layui-btn-sm layui-btn-normal ">编辑</button>
     <button lay-event="delEvent" class="layui-btn layui-btn-sm layui-btn-danger ">删除</button>
+    <button lay-event="grantEvent" class="layui-btn layui-btn-sm layui-btn-warm ">授权</button>
 </script>
 <%--添加角色的form--%>
 <form action="role/addRole" style="display: none" class="layui-form" action="" id="addRoleForm"
@@ -76,11 +79,12 @@
 </form>
 
 <script>
-    layui.use(['table', 'layer', 'form'], function () {
+    layui.use(['table', 'layer', 'form', 'tree'], function () {
         var table = layui.table;
         var layer = layui.layer;
         var $ = layui.$;
         var form = layui.form;
+        var tree = layui.tree;
         //第一个实例
         table.render({
             elem: '#roleList'
@@ -108,9 +112,7 @@
                         "roleCode": ""
                         , "roleName": ""
                         , "roleDesc": ""
-
                     });
-
 
                     //弹出一个form表单
                     layer.open({
@@ -217,6 +219,40 @@
 
                     layer.close(index);
                 });
+            } else if (layEvent === 'grantEvent') {
+                layer.open({
+                    type: 1,
+                    title: '授权',
+                    content: $('#moduleTree'),
+                    btn: ['确定', '取消'],
+                    btnAlign: 'c',
+                    area: ['450px', '600px'],
+                    success: function (e) {
+                        $.get('role/findTree?roleCode=' + data.roleCode, function (res) {
+                            tree.render({
+                                showCheckbox: true,
+                                elem: '#moduleTree',
+                                data: res,
+                                id: "treeId",
+                            })
+                        })
+                    },
+                    yes: function (e) {
+                        var checkData = tree.getChecked('treeId');
+                        let checkedIds = [];
+                        $.each(checkData, function (index, item) {
+                            if (item.children.length == 0) {
+                                checkedIds.push(item.id);
+                            }
+                        })
+                        $.post("role/updateTree", {
+                            roleCode: data.roleCode,
+                            checkedIds: JSON.stringify(checkedIds)
+                        }, function (res) {
+
+                        })
+                    }
+                })
             }
         });
     });

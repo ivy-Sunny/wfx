@@ -57,11 +57,10 @@
                     <dl class="layui-nav-child">
                         <dd><a target="content" href="${pageContext.request.contextPath}/role/index">用户信息管理</a></dd>
                         <dd><a target="content" href="javascript:;">角色信息管理</a></dd>
-                        <dd><a target="content" href="javascript:;">菜单信息管理</a></dd>
+                        <dd><a target="content" href="${pageContext.request.contextPath}/module/index">菜单信息管理</a></dd>
                         <dd><a target="content" href="">超链接</a></dd>
                     </dl>
                 </li>
-
             </ul>
         </div>
     </div>
@@ -82,6 +81,7 @@
     //JavaScript代码区域
     layui.use('element', function () {
         var element = layui.element;
+        var $ =layui.$;
     });
 </script>
 </body>

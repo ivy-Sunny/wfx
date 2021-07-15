@@ -15,17 +15,26 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.ivy</groupId>
             <artifactId>wfx_entity</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
         <!--Mybatis相关jar包组件-->
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
         </dependency>
+
+        <!--mybatis分页插件-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+        </dependency>
+
         <!--spring整合mybatis所需jar包-->
         <dependency>
             <groupId>org.mybatis</groupId>
@@ -41,11 +50,13 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
         </dependency>
+
         <!--JDBC技术-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
         </dependency>
+
     </dependencies>
 </project>
