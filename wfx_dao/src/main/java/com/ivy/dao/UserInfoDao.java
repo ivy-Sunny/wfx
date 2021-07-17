@@ -15,8 +15,6 @@ public interface UserInfoDao {
 
     public List<TreeNodeVO> getModulesByIds(String userId);
 
-    @Select("SELECT user_id, user_name, account, remark, user_type FROM user_info")
     public List<UserInfo> findAllUser();
 
-    public SysRole findUserInfoByUserId(String userId);
 }

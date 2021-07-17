@@ -23,7 +23,8 @@
     </bean>
 
     <!--放行静态资源-->
-        <mvc:default-servlet-handler/>
+    <mvc:default-servlet-handler/>
+
     <!--配置拦截器-->
     <mvc:interceptors>
         <mvc:interceptor>
@@ -37,4 +38,7 @@
             <bean class="com.ivy.controller.config.LoginHandlerInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
+
+    <!--统一异常处理-->
+    <bean class="com.ivy.controller.config.WfxExceptionHandler"/>
 </beans>

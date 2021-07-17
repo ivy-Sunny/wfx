@@ -1,6 +1,8 @@
 package com.ivy.controller;
 
+import com.ivy.entity.SysRole;
 import com.ivy.entity.UserInfo;
+import com.ivy.service.SysRoleService;
 import com.ivy.service.UserInfoService;
 import com.ivy.vo.LayuiVO;
 import com.ivy.vo.ResultVO;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * UserController
@@ -24,6 +27,8 @@ import javax.servlet.http.HttpSession;
 public class UserController {
     @Resource
     private UserInfoService userInfoService;
+    @Resource
+    private SysRoleService sysRoleService;
 
     @GetMapping("/login")
     @ResponseBody
@@ -36,7 +41,9 @@ public class UserController {
     }
 
     @RequestMapping("/index")
-    public String index() {
+    public String index(Model model) {
+        List<SysRole> all = sysRoleService.findAll();
+        model.addAttribute("roles", all);
         return "user";
     }
 

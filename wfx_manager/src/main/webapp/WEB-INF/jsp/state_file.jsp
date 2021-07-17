@@ -11,4 +11,9 @@
 <link rel="stylesheet" href="css/common.css">
 <script type="text/javascript" src="layui/layui.js"></script>
 <%--<script type="text/javascript" src="lib/jquery.min.js"></script>--%>
+<style>
+    .layui-table-cell {
+        overflow: visible !important;
+    }
+</style>
 

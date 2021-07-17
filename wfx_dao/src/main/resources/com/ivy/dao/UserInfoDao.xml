@@ -36,11 +36,23 @@
         ON rf.role_id = a.role_id)
         ORDER BY m1_module_code,m2_module_code,m3_module_code
     </select>
-    
-    <select id="findUserInfoByUserId" resultType="userInfo" parameterType="string">
-        SELECT sr.role_code, sr.role_name, sr.role_desc,sr.role_order, sr.role_type
-        FROM (SELECT role_id FROM sys_user_role WHERE user_id = #{suerId}) AS ri
-        INNER JOIN sys_role AS sr
-        ON sr.role_code = ri.role_id
+
+
+    <resultMap id="findAllUserMap" type="userInfo">
+        <id column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="account" property="account"/>
+        <result column="user_type" property="userType"/>
+        <result column="remark" property="remark"/>
+        <collection property="roles" ofType="sysRole">
+            <id column="role_code" property="roleCode"/>
+            <result column="role_name" property="roleName"/>
+        </collection>
+    </resultMap>
+    <select id="findAllUser" resultMap="findAllUserMap">
+        SELECT u.user_id, u.user_name, u.account, u.user_type, u.remark, sr.role_code, sr.role_name
+        FROM user_info AS u
+        LEFT JOIN sys_user_role AS sur ON u.user_id = sur.user_id
+        LEFT JOIN sys_role AS sr ON sr.role_code = sur.role_id
     </select>
 </mapper>

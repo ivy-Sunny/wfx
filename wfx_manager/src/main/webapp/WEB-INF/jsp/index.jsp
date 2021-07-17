@@ -53,13 +53,14 @@
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test" lay-shrink="all">
+
                 <c:forEach items="${moduleList}" var="item">
                     <li class="layui-nav-item">
                         <a class="" href="javascript:;">${item.title}</a>
                         <dl class="layui-nav-child">
                             <c:forEach items="${item.children}" var="el">
                                 <dd><a target="content"
-                                       href="${pageContext.request.contextPath}/${el.linkUrl}">${el.title}</a></dd>
+                                       href="${pageContext.request.contextPath}${el.linkUrl}">${el.title}</a></dd>
                             </c:forEach>
                         </dl>
                     </li>
@@ -87,7 +88,6 @@
         var element = layui.element;
         var $ = layui.$;
         $("#nameShow").text(userinfo.userName);
-
     });
 </script>
 </body>
