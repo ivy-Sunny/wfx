@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.otg/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ivy.dao.SysModuleDao">
+    <select id="search" parameterType="sysModule" resultType="sysModule">
+        SELECT * FROM sys_module
+        <where>
+            <if test="moduleCode != null and moduleCode != ''">
+                AND module_code = #{moduleCode}
+            </if>
+            <if test="moduleName != null and moduleName != ''">
+                AND module_Name LIKE CONCAT('%',#{moduleName},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

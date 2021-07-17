@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.otg/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ivy.dao.UserInfoDao">
+    <resultMap id="findModules" type="treeNodeVO">
+        <id property="id" column="m1_module_code"/>
+        <result property="title" column="m1_module_name"/>
+        <result property="checked" column="checked"/>
+        <collection property="children" ofType="treeNodeVO">
+            <id property="id" column="m2_module_code"/>
+            <result property="title" column="m2_module_name"/>
+            <result property="checked" column="checked"/>
+            <collection property="children" ofType="treeNodeVO">
+                <id property="id" column="m3_module_code"/>
+                <result property="title" column="m3_module_name"/>
+                <result property="checked" column="checked"/>
+                <result property="linkUrl" column="link_url"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="getModulesByIds" resultMap="findModules">
+        SELECT m1.module_code m1_module_code,m1.module_name m1_module_name,
+        m2.module_code m2_module_code,m2.module_name m2_module_name,
+        m3.module_code m3_module_code,m3.module_name m3_module_name,
+        m3.link_url
+        FROM sys_module m1
+        LEFT JOIN sys_module m2
+        ON m1.module_code = m2.parent_module
+        LEFT JOIN sys_module m3
+        ON m2.module_code = m3.parent_module
+        WHERE m1.module_code = '0101' AND m3.module_code IN
+        (SELECT rf.module_id FROM sys_role_fun rf
+        LEFT JOIN (SELECT sur.role_id FROM sys_user_role sur WHERE sur.user_id = #{userId}) AS a
+        ON rf.role_id = a.role_id)
+        ORDER BY m1_module_code,m2_module_code,m3_module_code
+    </select>
+    
+    <select id="findUserInfoByUserId" resultType="userInfo" parameterType="string">
+        SELECT sr.role_code, sr.role_name, sr.role_desc,sr.role_order, sr.role_type
+        FROM (SELECT role_id FROM sys_user_role WHERE user_id = #{suerId}) AS ri
+        INNER JOIN sys_role AS sr
+        ON sr.role_code = ri.role_id
+    </select>
+</mapper>

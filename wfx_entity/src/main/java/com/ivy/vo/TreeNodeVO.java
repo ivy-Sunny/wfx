@@ -21,4 +21,6 @@ public class TreeNodeVO {
     private boolean checked;
 
     private List<TreeNodeVO> children;
+
+    private String linkUrl;
 }

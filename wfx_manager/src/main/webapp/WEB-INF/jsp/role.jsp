@@ -175,7 +175,7 @@
                     btn: ['确定', '取消'],
                     btnAlign: 'c',
                     area: ['500px', '300px'],
-                    yes: function (index, layero) {
+                    yes: function (index) {
                         //请求
                         $.post("role/updateRole", $("#updateRoleForm").serialize(), function (res) {
                             if (res.success) {
@@ -237,19 +237,24 @@
                             })
                         })
                     },
-                    yes: function (e) {
-                        var checkData = tree.getChecked('treeId');
+                    yes: function (index) {
+                        var checkData = tree.getChecked('treeId')[0].children;
                         let checkedIds = [];
-                        $.each(checkData, function (index, item) {
-                            if (item.children.length == 0) {
-                                checkedIds.push(item.id);
+                        checkData.forEach(v => {
+                            if (v.children.length != 0){
+                                v.children.forEach(v2 =>{
+                                    checkedIds.push(v2.id);
+                                })
+                            }else{
+                                checkedIds.push(v.id);
                             }
                         })
+                        console.log(checkedIds)
                         $.post("role/updateTree", {
                             roleCode: data.roleCode,
                             checkedIds: JSON.stringify(checkedIds)
                         }, function (res) {
-
+                            layer.close(index);
                         })
                     }
                 })

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: ivy
@@ -37,37 +38,38 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    贤心
+                    <span id="nameShow"></span>
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
                     <dd><a href="">安全设置</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="">退了</a></li>
+            <li class="layui-nav-item"><a href="">退出登录</a></li>
         </ul>
     </div>
 
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-            <ul class="layui-nav layui-nav-tree" lay-filter="test">
-                <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">权限管理</a>
-                    <dl class="layui-nav-child">
-                        <dd><a target="content" href="${pageContext.request.contextPath}/role/index">用户信息管理</a></dd>
-                        <dd><a target="content" href="javascript:;">角色信息管理</a></dd>
-                        <dd><a target="content" href="${pageContext.request.contextPath}/module/index">菜单信息管理</a></dd>
-                        <dd><a target="content" href="">超链接</a></dd>
-                    </dl>
-                </li>
+            <ul class="layui-nav layui-nav-tree" lay-filter="test" lay-shrink="all">
+                <c:forEach items="${moduleList}" var="item">
+                    <li class="layui-nav-item">
+                        <a class="" href="javascript:;">${item.title}</a>
+                        <dl class="layui-nav-child">
+                            <c:forEach items="${item.children}" var="el">
+                                <dd><a target="content"
+                                       href="${pageContext.request.contextPath}/${el.linkUrl}">${el.title}</a></dd>
+                            </c:forEach>
+                        </dl>
+                    </li>
+                </c:forEach>
             </ul>
         </div>
     </div>
-
     <div class="layui-body">
         <!-- 内容主体区域 -->
-        <iframe name="content" style="width: 100%;height: 100%;border: 0px" src="">
+        <iframe name="content" style="width: 100%;height: 100%;border: 0px" src="main">
 
         </iframe>
     </div>
@@ -80,8 +82,12 @@
 <script>
     //JavaScript代码区域
     layui.use('element', function () {
+        const userinfo = JSON.parse(sessionStorage.getItem("userinfo"));
+        console.log(userinfo);
         var element = layui.element;
-        var $ =layui.$;
+        var $ = layui.$;
+        $("#nameShow").text(userinfo.userName);
+
     });
 </script>
 </body>
